@@ -11,10 +11,10 @@ import { databaseConfig } from './config/database.config';
 import { authConfig } from './config/auth.config';
 import { redisConfig } from './config/redis.config';
 
-/* // Entities
+// Entities
 import { User } from './users/entities/user.entity';
 import { Organization } from './organizations/entities/organization.entity';
-import { OrganizationUser } from './organizations/entities/organization-user.entity'; */
+import { OrganizationUser } from './organizations/entities/organization-user.entity';
 
 @Module({
   imports: [
@@ -34,21 +34,16 @@ import { OrganizationUser } from './organizations/entities/organization-user.ent
         username: configService.get<string>('database.username'),
         password: configService.get<string>('database.password'),
         database: configService.get<string>('database.name'),
-        // entities: [User, Organization, OrganizationUser],
+        entities: [User, Organization, OrganizationUser],
         synchronize: configService.get('NODE_ENV') === 'development',
         logging: configService.get('NODE_ENV') === 'development',
       }),
     }),
 
-    // Redis Cache Configuration
-    CacheModule.registerAsync({
+    // Redis Cache Configuration - deshabilitado temporalmente
+    CacheModule.register({
       isGlobal: true,
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        host: configService.get<string>('redis.host'),
-        port: configService.get<number>('redis.port'),
-        ttl: 300, // 5 minutes default
-      }),
+      ttl: 300, // 5 minutes default
     }),
 
     // Rate Limiting
