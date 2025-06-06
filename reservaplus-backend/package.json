@@ -8,19 +8,52 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    
     "test": "jest --config jest.config.js",
     "test:watch": "jest --config jest.config.js --watch",
     "test:cov": "jest --config jest.config.js --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --config jest.config.js --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    
     "test:auth": "jest --config jest.config.js --testPathPattern=auth",
+    "test:users": "jest --config jest.config.js --testPathPattern=users",
+    "test:organizations": "jest --config jest.config.js --testPathPattern=organizations",
+    "test:appointments": "jest --config jest.config.js --testPathPattern=appointments",
+    
     "test:auth:e2e": "jest --config ./test/jest-e2e.json --testPathPattern=auth",
-    "test:unit": "jest --config jest.config.js --testPathPattern=spec.ts$"
+    "test:users:e2e": "jest --config ./test/jest-e2e.json --testPathPattern=users",
+    
+    "test:unit": "jest --config jest.config.js --testPathPattern=spec.ts$",
+    "test:integration": "jest --config ./test/jest-e2e.json",
+    "test:coverage:report": "jest --config jest.config.js --coverage && open coverage/lcov-report/index.html",
+    
+    "typeorm": "typeorm-ts-node-commonjs",
+    "typeorm:migration:generate": "npm run typeorm -- migration:generate",
+    "typeorm:migration:run": "npm run typeorm -- migration:run",
+    "typeorm:migration:revert": "npm run typeorm -- migration:revert",
+    "typeorm:schema:sync": "npm run typeorm -- schema:sync",
+    "typeorm:schema:drop": "npm run typeorm -- schema:drop",
+    
+    "db:seed": "ts-node src/database/seeds/run-seeds.ts",
+    "db:reset": "npm run typeorm:schema:drop && npm run typeorm:migration:run && npm run db:seed",
+    
+    "ci:install": "npm ci",
+    "ci:lint": "npm run lint:check",
+    "ci:format": "npm run format:check",
+    "ci:test": "npm run test:cov",
+    "ci:test:e2e": "npm run test:e2e",
+    "ci:build": "npm run build",
+    "ci:audit": "npm audit --audit-level moderate",
+    
+    "precommit": "npm run lint && npm run format && npm run test",
+    "prepush": "npm run ci:test && npm run ci:build"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^3.0.1",
