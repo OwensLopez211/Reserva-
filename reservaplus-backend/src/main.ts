@@ -50,7 +50,18 @@ async function bootstrap(): Promise<void> {
       },
       'JWT-auth',
     )
+    // *** AGREGAR MÁS TAGS ***
     .addTag('Health', 'Health checks y estado del sistema')
+    .addTag('Auth', 'Autenticación y autorización')
+    .addTag('Users', 'Gestión de usuarios')
+    .addTag('Organizations', 'Gestión de organizaciones')
+    .addTag('Professionals', 'Gestión de profesionales')
+    .addTag('Services', 'Gestión de servicios')
+    .addTag('Clients', 'Gestión de clientes')
+    .addTag('Appointments', 'Sistema de reservas y citas')
+    .addTag('Calendar', 'Calendario y disponibilidad')
+    .addTag('Notifications', 'Sistema de notificaciones')
+    .addTag('Reports', 'Reportes y analytics')
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
@@ -62,8 +73,14 @@ async function bootstrap(): Promise<void> {
       docExpansion: 'none',
       filter: true,
       showRequestDuration: true,
+      defaultModelsExpandDepth: 1,
+      defaultModelExpandDepth: 1,
     },
     customSiteTitle: 'ReservaPlus API Documentation',
+    customCss: `
+      .swagger-ui .topbar { display: none }
+      .swagger-ui .info { margin: 50px 0 }
+    `,
   });
 
   const port = configService.get<number>('app.port') || 3000;
@@ -71,6 +88,7 @@ async function bootstrap(): Promise<void> {
 
   console.log(`🚀 ReservaPlus API running on: http://localhost:${port}`);
   console.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
+  console.log(`📊 Health Check: http://localhost:${port}/api`);
 }
 
 void bootstrap();

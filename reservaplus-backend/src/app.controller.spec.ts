@@ -6,17 +6,45 @@ describe('AppController', () => {
   let appController: AppController;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
       providers: [AppService],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    appController = module.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+  it('should be defined', () => {
+    expect(appController).toBeDefined();
+  });
+
+  describe('getHealth', () => {
+    it('should return health status', () => {
+      const result = appController.getHealth();
+
+      expect(result).toMatchObject({
+        success: true,
+        message: 'ReservaPlus API is running!',
+        version: '1.0.0',
+      });
+      expect(result).toHaveProperty('timestamp');
+    });
+  });
+
+  describe('getStatus', () => {
+    it('should return system status', () => {
+      const result = appController.getStatus();
+
+      expect(result).toMatchObject({
+        success: true,
+        data: {
+          uptime: expect.any(Number),
+          environment: expect.any(String),
+          version: '1.0.0',
+          node: expect.any(String),
+        },
+      });
+      expect(result).toHaveProperty('timestamp');
     });
   });
 });

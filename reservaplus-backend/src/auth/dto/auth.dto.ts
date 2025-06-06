@@ -19,33 +19,28 @@ export class LoginDto {
   organizationSlug?: string;
 }
 
-// DTO para respuesta de login
-export class LoginResponseDto {
-  @ApiProperty({
-    description: 'Token de acceso JWT',
-    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-  })
-  accessToken: string;
+// DTO para organización - DEFINIR PRIMERO
+export class OrganizationDto {
+  @ApiProperty({ description: 'ID de la organización' })
+  id: string;
 
-  @ApiProperty({
-    description: 'Token de refresh',
-    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-  })
-  refreshToken: string;
+  @ApiProperty({ description: 'Nombre de la organización' })
+  name: string;
 
-  @ApiProperty({
-    description: 'Tiempo de expiración en segundos',
-    example: 3600,
-  })
-  expiresIn: number;
+  @ApiProperty({ description: 'Slug de la organización' })
+  slug: string;
 
-  @ApiProperty({
-    description: 'Información del usuario',
-  })
-  user: UserProfileDto;
+  @ApiProperty({ description: 'Tipo de industria' })
+  industryType: string;
+
+  @ApiProperty({ description: 'Rol del usuario en esta organización' })
+  role: string;
+
+  @ApiProperty({ description: 'Usuario activo en esta organización' })
+  isActive: boolean;
 }
 
-// DTO para el perfil del usuario
+// DTO para el perfil del usuario - DEFINIR SEGUNDO
 export class UserProfileDto {
   @ApiProperty({ description: 'ID del usuario' })
   id: string;
@@ -78,25 +73,31 @@ export class UserProfileDto {
   lastLoginAt?: Date;
 }
 
-// DTO para organización
-export class OrganizationDto {
-  @ApiProperty({ description: 'ID de la organización' })
-  id: string;
+// DTO para respuesta de login - DEFINIR TERCERO (después de UserProfileDto)
+export class LoginResponseDto {
+  @ApiProperty({
+    description: 'Token de acceso JWT',
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+  })
+  accessToken: string;
 
-  @ApiProperty({ description: 'Nombre de la organización' })
-  name: string;
+  @ApiProperty({
+    description: 'Token de refresh',
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+  })
+  refreshToken: string;
 
-  @ApiProperty({ description: 'Slug de la organización' })
-  slug: string;
+  @ApiProperty({
+    description: 'Tiempo de expiración en segundos',
+    example: 3600,
+  })
+  expiresIn: number;
 
-  @ApiProperty({ description: 'Tipo de industria' })
-  industryType: string;
-
-  @ApiProperty({ description: 'Rol del usuario en esta organización' })
-  role: string;
-
-  @ApiProperty({ description: 'Usuario activo en esta organización' })
-  isActive: boolean;
+  @ApiProperty({
+    description: 'Información del usuario',
+    type: UserProfileDto, // Ahora UserProfileDto ya está definido
+  })
+  user: UserProfileDto;
 }
 
 // DTO para cambiar de organización
